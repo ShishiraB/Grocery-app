@@ -25,8 +25,27 @@ class ChatFragment : KeyedFragment() {
 
     private val viewModel by lazy { lookup<ChatViewModel>() }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-      //  super.onViewCreated(view, savedInstanceState)
+    lateinit var binding: FragmentChatBinding
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentChatBinding.bind(view)
+
+        binding.backIcon.setOnClickListener {
+            viewModel.handleBackButton()
+        }
+
+        val channelId: String = (getKey() as ChatKey).channelId
+
+        val messageListViewModel: MessageListViewModel by viewModels {
+            MessageListViewModelFactory(cid = channelId)
+        }
+
+        val messageInputViewModel: MessageInputViewModel by viewModels {
+            MessageListViewModelFactory(cid = channelId)
+        }
+
+        messageListViewModel.bindView(binding.messageListView, viewLifecycleOwner)
+        messageInputViewModel.bindView(binding.messageInputView, viewLifecycleOwner)
     }
 }
