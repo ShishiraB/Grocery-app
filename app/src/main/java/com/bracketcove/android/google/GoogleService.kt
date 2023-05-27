@@ -54,7 +54,7 @@ class GoogleService(
                 .mode(TravelMode.DRIVING)
                 .units(Unit.METRIC)
                 //Change this appropriately
-                .region("ca")
+                .region("in")
                 .origin(
                     userLatLng
                 )
