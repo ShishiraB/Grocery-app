@@ -51,7 +51,6 @@ class UnterApp: Application() {
 
         globalServices = GlobalServices.builder()
             .add(streamRideService)
-                //Rebind allows us to pass in an implementation but provide it as it's interface
             .rebind<RideService>(streamRideService)
             .add(streamUserService)
             .rebind<UserService>(streamUserService)
@@ -68,18 +67,18 @@ class UnterApp: Application() {
 
     private fun configureStream(): ChatClient {
         val logLevel = if (BuildConfig.DEBUG) ChatLogLevel.ALL else ChatLogLevel.NOTHING
-//        val pluginFactory = StreamOfflinePluginFactory(
-//            config = Config(
-//                backgroundSyncEnabled = true,
-//                userPresence = true,
-//                persistenceEnabled = true,
-//                uploadAttachmentsNetworkType = UploadAttachmentsNetworkType.NOT_ROAMING,
-//            ),
-//            appContext = this,
-//        )
+        val pluginFactory = StreamOfflinePluginFactory(
+            config = Config(
+                backgroundSyncEnabled = true,
+                userPresence = true,
+                persistenceEnabled = true,
+                uploadAttachmentsNetworkType = UploadAttachmentsNetworkType.NOT_ROAMING,
+            ),
+            appContext = this,
+        )
 
         return ChatClient.Builder(BuildConfig.STREAM_API_KEY, this)
- //           .withPlugin(pluginFactory)
+            .withPlugin(pluginFactory)
             .logLevel(logLevel)
             .build()
     }

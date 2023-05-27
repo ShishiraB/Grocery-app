@@ -43,27 +43,79 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
+
         UnterHeader(
             modifier = Modifier.padding(top = 64.dp),
             subtitleText = stringResource(id = R.string.need_a_ride)
         )
+
         EmailInputField(
             modifier = Modifier.padding(top = 16.dp),
             viewModel = viewModel
         )
-        LoginContinueButton(
-            modifier = Modifier.padding(top = 32.dp),
-            handleLogin = { viewModel.handleLogin() }
-        )
+
         PasswordInputField(
             modifier = Modifier.padding(top = 16.dp),
             viewModel = viewModel
         )
+
+        LoginContinueButton(
+            modifier = Modifier.padding(top = 32.dp),
+            handleLogin = { viewModel.handleLogin() }
+        )
+
         SignupText(
             modifier = Modifier.padding(top = 32.dp),
             viewModel = viewModel
         )
     }
+}
+
+@Composable
+fun EmailInputField(
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel
+) {
+
+    OutlinedTextField(
+        modifier = modifier,
+        value = viewModel.email,
+        onValueChange = {
+            viewModel.updateEmail(it)
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        label = { Text(text = stringResource(id = R.string.email)) }
+    )
+}
+
+@Composable
+fun PasswordInputField(
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel
+) {
+
+    var showPassword by rememberSaveable { mutableStateOf(false) }
+
+    OutlinedTextField(
+        modifier = modifier,
+        value = viewModel.password,
+        onValueChange = {
+            viewModel.updatePassword(it)
+        },
+        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        label = { Text(text = stringResource(id = R.string.password)) },
+        trailingIcon = {
+            val image = if (showPassword)
+                Icons.Filled.Visibility
+            else Icons.Filled.VisibilityOff
+
+            val description = if (showPassword) stringResource(id = R.string.hide_password) else stringResource(id = R.string.show_password)
+            IconButton(onClick = { showPassword = !showPassword}){
+                Icon(imageVector  = image, description)
+            }
+        }
+    )
 }
 
 @Composable
@@ -113,54 +165,4 @@ fun SignupText(
         )
     }
 }
-
-@Composable
-fun PasswordInputField(
-    modifier: Modifier = Modifier,
-    viewModel: LoginViewModel
-) {
-
-    var sp by rememberSaveable { mutableStateOf(false) }
-    OutlinedTextField(
-        modifier = modifier,
-        value = viewModel.password,
-        onValueChange = {
-            viewModel.updatePassword(it)
-        },
-        visualTransformation = if (sp) VisualTransformation.None else PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        label = { Text(text = stringResource(id = R.string.password)) },
-        trailingIcon = {
-            val image = if (sp)
-                Icons.Filled.Visibility
-            else Icons.Filled.VisibilityOff
-            val description = if (sp) stringResource(id = R.string.hide_password) else stringResource(id = R.string.show_password)
-            IconButton(onClick = { sp = !sp}){
-                Icon(imageVector  = image, description)
-            }
-        }
-    )
-}
-
-@Composable
-fun EmailInputField(
-    modifier: Modifier = Modifier,
-    viewModel: LoginViewModel
-) {
-
-    OutlinedTextField(
-        modifier = modifier,
-        value = viewModel.email,
-        onValueChange = {
-            viewModel.updateEmail(it)
-        },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        label = { Text(text = stringResource(id = R.string.email)) }
-    )
-}
-
-
-
-
-
 

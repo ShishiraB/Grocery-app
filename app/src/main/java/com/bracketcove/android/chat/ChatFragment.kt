@@ -21,7 +21,7 @@ import io.getstream.chat.android.ui.message.input.viewmodel.bindView
 import io.getstream.chat.android.ui.message.list.viewmodel.bindView
 import io.getstream.chat.android.ui.message.list.viewmodel.factory.MessageListViewModelFactory
 
-class ChatFragment : KeyedFragment() {
+class ChatFragment : KeyedFragment(R.layout.fragment_chat) {
 
     private val viewModel by lazy { lookup<ChatViewModel>() }
 
@@ -36,7 +36,6 @@ class ChatFragment : KeyedFragment() {
         }
 
         val channelId: String = (getKey() as ChatKey).channelId
-
         val messageListViewModel: MessageListViewModel by viewModels {
             MessageListViewModelFactory(cid = channelId)
         }

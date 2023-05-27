@@ -52,7 +52,6 @@ class DriverDashboardFragment : Fragment(R.layout.fragment_driver_dashboard), On
     private lateinit var locationClient: FusedLocationProviderClient
 
     lateinit var binding: FragmentDriverDashboardBinding
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

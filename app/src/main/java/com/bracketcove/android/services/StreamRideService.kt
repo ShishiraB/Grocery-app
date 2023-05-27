@@ -78,7 +78,7 @@ class StreamRideService(
         }
     }
 
-    private fun observeChannelEvents(channelClient: ChannelClient) {
+    private suspend fun observeChannelEvents(channelClient: ChannelClient) {
         channelClient.subscribe { event: ChatEvent ->
             when (event) {
                 is ChannelDeletedEvent -> {

@@ -2,6 +2,7 @@ package com.bracketcove.android.dashboards.driver
 
 import android.util.Log
 import com.bracketcove.android.ServiceResult
+import com.bracketcove.android.google.GoogleService
 import com.bracketcove.android.navigation.ChatKey
 import com.bracketcove.android.navigation.LoginKey
 import com.bracketcove.android.navigation.ProfileSettingsKey
@@ -19,16 +20,9 @@ import com.zhuinden.simplestack.History
 import com.zhuinden.simplestack.ScopedServices
 import com.zhuinden.simplestack.StateChange
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlin.coroutines.CoroutineContext
 
-/**
- * Note: the order of functions in this classes has been re-arranged to make it easier to
- * uncomment some things.
- */
 class DriverDashboardViewModel(
     val backstack: Backstack,
     val getUser: GetUser,
@@ -44,9 +38,18 @@ class DriverDashboardViewModel(
 
     private val _driverModel = MutableStateFlow<UnterUser?>(null)
     private val _rideModel: Flow<ServiceResult<Ride?>> = rideService.rideFlow()
-
     private val _mapIsReady = MutableStateFlow(false)
 
+    /*
+    Different UI states:
+    1. User may never be null
+    2. Ride may be null (If User.status is INACTIVE, then no need to try to fetch a ride)
+    3. Ride may be not null, and in varying states:
+        - SEARCHING_FOR_DRIVER
+        - PASSENGER_PICK_UP
+        - EN_ROUTE
+        - ARRIVED
+     */
     val uiState = combineTuple(_driverModel, _rideModel, _mapIsReady).map { (driver, rideResult, isMapReady) ->
         if (rideResult is ServiceResult.Failure) return@map DriverDashboardUiState.Error
         val ride = (rideResult as ServiceResult.Value).value
