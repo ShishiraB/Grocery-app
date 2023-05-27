@@ -352,7 +352,7 @@ class PassengerDashboardFragment : Fragment(R.layout.fragment_passenger_dashboar
                                 .mode(TravelMode.DRIVING)
                                 .units(Unit.METRIC)
                                 //Change this appropriately
-                                .region("ca")
+                                .region("in")
                                 .origin(
                                     com.google.maps.model.LatLng(
                                         uiState.passengerLat,

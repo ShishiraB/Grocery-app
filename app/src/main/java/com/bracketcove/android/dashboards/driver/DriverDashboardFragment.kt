@@ -336,7 +336,7 @@ class DriverDashboardFragment : Fragment(R.layout.fragment_driver_dashboard), On
                                 .mode(TravelMode.DRIVING)
                                 .units(com.google.maps.model.Unit.METRIC)
                                 //Change this appropriately
-                                .region("ca")
+                                .region("in")
                                 .origin(
                                     com.google.maps.model.LatLng(
                                         uiState.driverLat,
